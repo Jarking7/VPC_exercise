@@ -7,7 +7,8 @@ The following document describes the process to setup a public webpage that conn
  
 The resulting network will look something like this:
  
-IMagen de diagrana
+![WhatsApp Image 2025-02-11 at 5 33 50 PM](https://github.com/user-attachments/assets/4fffbeef-92d2-4842-bc30-5915243f4409)
+
  
 **1. VPC, Subnet, Routing table and Internet Gateway**
  
