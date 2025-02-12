@@ -7,7 +7,8 @@ The following document describes the process to setup a public webpage that conn
  
 The resulting network will look something like this:
  
-![WhatsApp Image 2025-02-11 at 5 33 50 PM](https://github.com/user-attachments/assets/4fffbeef-92d2-4842-bc30-5915243f4409)
+
+![WhatsApp Image 2025-02-11 at 5 36 38 PM](https://github.com/user-attachments/assets/7b07b659-73c3-4217-bcf3-1a4a61b11108)
 
  
 **1. VPC, Subnet, Routing table and Internet Gateway**
@@ -16,9 +17,11 @@ The first step is to create a new VPC. This VPC will serve as the main container
  
 When creating the VPC, it's necessary to select the option `VPC and more`, to also create the routing tables, the public and private subnets and the Internet Gateway.
  
--- IMagen de vpc
- 
--- imagen de preview
+
+ ![WhatsApp Image 2025-02-11 at 5 33 50 PM (3)](https://github.com/user-attachments/assets/b240a24b-8817-4bd4-b196-a15eaef486ab)
+
+![WhatsApp Image 2025-02-11 at 5 33 50 PM](https://github.com/user-attachments/assets/2584d34a-228f-49c5-b5fe-a35dd15dd9b9)
+
  
 **2. Security Groups**
  
@@ -55,8 +58,9 @@ Once the security groups are ready, we can now create 2 new EC2 instances, a pub
  
 When creating the instances, its necessary to select the newly created VPC and the existing security groups, just make sure one instance has the private SG and the other one has the public SG.
  
---IMAGEN NETWORKING EC2
- 
+
+ ![WhatsApp Image 2025-02-11 at 5 33 50 PM (2)](https://github.com/user-attachments/assets/908ad6c7-bad2-4a58-9079-bf0d2f06f536)
+
  
 **Key pairs**
  
@@ -128,7 +132,7 @@ This should be the content of the file
     <h1>Hola desde Nginx</h1>
     <p id="mensaje">Cargando mensaje desde la API...</p>
 <script>
-    fetch("http://52.53.126.198/api/hello")  // Ahora usa la IP pública de la instancia pública
+    fetch("http://[IP PUBLICA_PUBLICA]/api/hello")  // Ahora usa la IP pública de la instancia pública
     .then(response => response.json())
     .then(data => {
         document.getElementById("mensaje").innerText = data.message;
@@ -189,17 +193,31 @@ The content should be the following:
  
 ```python
 from flask import Flask, jsonify
-from flask_cors import CORS  # <--- IMPORTANTE
- 
-app = Flask(__name__)
-CORS(app)  # <--- Habilita CORS para permitir peticiones desde el navegador
- 
-@app.route('/api/hello', methods=['GET'])
-def hello():
-    return jsonify({'message': 'Hola Mundo desde la API privada'}), 200
- 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+from flask_cors import CORS
+import mysql.connector
+
+app = Flask(name)
+CORS(app)
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host=["database-host"],
+        user=["usuario"],
+        password="*****",
+        database=["db_name]"
+    )
+
+@app.route('/api/usuarios', methods=['GET'])
+def obtener_usuarios():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM ['TABLA']  LIMIT 5;")
+    usuarios = cursor.fetchall()
+    conn.close()
+  
+
+if name == 'main':
+    app.run(host='0.0.0.0', port=8080)
 ```
  
 **Update NGINX to serve our API**
@@ -233,3 +251,11 @@ ps aux | grep python
 ```
 sudo systemctl restart nginx
 ```
+
+**Received message to ensure everything is working well**
+![WhatsApp Image 2025-02-11 at 5 33 50 PM (1)](https://github.com/user-attachments/assets/59c67627-baff-4a65-8638-91f1402fef48)
+
+
+**CONCLUSION**
+
+The final result shows us how networking is one of the most important topic that we should know and learn because it is involve in every task or tool into AWS, and provide us security in our projects and data.
