@@ -252,7 +252,10 @@ ps aux | grep python
 sudo systemctl restart nginx
 ```
 
-**Received message to ensure everything is working well**
+**Invoke the API**
+```
+python3 main.py
+```
 ![WhatsApp Image 2025-02-11 at 5 33 50 PM (1)](https://github.com/user-attachments/assets/59c67627-baff-4a65-8638-91f1402fef48)
 
 
